@@ -19,47 +19,12 @@ jobs:
       matrix:
         expected_hostname: [runnervmg1sw1.local]
         version:
-          - '12.2'
-          - '13.0'
-          - '13.1'
-          - '13.2'
-          - '13.3'
-          - '13.4'
-          - '13.5'
-          - '14.0'
-          - '14.1'
-          - '14.2'
-          - '14.3'
           - '15.0'
 
         architecture:
           - name: x86-64
             qemu: x86
             uname: amd64
-
-          - name: arm64
-            qemu: aarch64
-
-        exclude:
-          - version: '12.2'
-            architecture:
-              name: arm64
-              qemu: aarch64
-
-        include:
-          - version: '12.4'
-            copy_from_previous_release: true
-            expected_hostname: ''
-            architecture:
-              name: arm64
-              qemu: aarch64
-
-          - version: '12.4'
-            expected_hostname: runnervmg1sw1.local
-            architecture:
-              name: x86-64
-              qemu: x86
-              uname: amd64
 
     steps:
       - name: Clone Repository
@@ -92,7 +57,7 @@ jobs:
       #     limit-access-to-actor: true
 
       - name: Build Image
-        if: '!matrix.copy_from_previous_release'
+        if: true
         env:
           PACKER_LOG: 1
         run: |
@@ -100,7 +65,7 @@ jobs:
             -var 'headless=true'
 
       - name: Copy from previous release
-        if: matrix.copy_from_previous_release
+        if: false
         run: |
           curl -O -L \
             --retry 3 \
@@ -140,7 +105,7 @@ jobs:
             [ "`uname -s`" = 'FreeBSD' ]
             [ "`uname -r`" = '${{ matrix.version}}-RELEASE' ]
             [ "`uname -m`" = '${{ matrix.architecture.uname || matrix.architecture.name }}' ]
-            [ "`pwd`" = '/home/runner/work/freebsd-builder/freebsd-builder' ] || [ "`pwd`" = '/usr/home/runner/work/freebsd-builder/freebsd-builder' ]
+            [ "`pwd`" = '/home/runner/work/cross-platform-actions-freebsd-builder/cross-platform-actions-freebsd-builder' ] || [ "`pwd`" = '/usr/home/runner/work/cross-platform-actions-freebsd-builder/cross-platform-actions-freebsd-builder' ]
             [ "`hostname -f`" = '${{ matrix.expected_hostname }}' ]
             cat host_to_guest.txt | grep -q 'host to guest'
             echo 'guest to host' > guest_to_host.txt
