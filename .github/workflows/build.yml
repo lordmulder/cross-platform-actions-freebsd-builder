@@ -56,6 +56,9 @@ jobs:
       #   with:
       #     limit-access-to-actor: true
 
+      - name: Free Disk Space
+        uses: jlumbroso/free-disk-space@main
+
       - name: Build Image
         if: true
         env:
