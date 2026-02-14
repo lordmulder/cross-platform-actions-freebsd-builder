@@ -11,7 +11,7 @@ mkdir -p /opt/sysroot/arm64
 
 curl -sSf https://download.freebsd.org/releases/amd64/amd64/15.0-RELEASE/lib32.txz | tar -C / -xJ
 curl -sSf https://download.freebsd.org/ftp/releases/arm64/15.0-RELEASE/base.txz | tar -C /opt/sysroot/arm64 -xJ lib usr/lib
-curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.93.0
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- -y --default-toolchain 1.93.1
 
 /opt/rust/cargo/bin/rustup target add x86_64-unknown-freebsd i686-unknown-freebsd
 /opt/rust/cargo/bin/rustup component add rust-src
