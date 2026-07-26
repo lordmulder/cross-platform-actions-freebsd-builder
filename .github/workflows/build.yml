@@ -97,6 +97,11 @@ jobs:
         if: '!matrix.copy_from_previous_release'
         env:
           PACKER_LOG: 1
+          # Authenticate `packer init`'s plugin download. Unauthenticated GitHub
+          # API access is limited to 60 requests/hour per IP, which the full
+          # build matrix exhausts, failing whichever jobs fetch the qemu plugin
+          # after the limit is hit.
+          PACKER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           ./build.sh '${{ matrix.version }}' '${{ matrix.architecture.name }}' \
             -var 'headless=true'
