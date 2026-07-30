@@ -131,15 +131,12 @@ jobs:
             https://github.com/cross-platform-actions/freebsd-builder/releases/download/v0.5.0/freebsd-${{ matrix.version }}-${{ matrix.architecture.name }}.qcow2
 
       - name: Start Local HTTP Server
-        if: matrix.architecture.name != 'riscv64'
         run: python3 -m http.server 8080 --directory output &
 
       - name: Create File
-        if: matrix.architecture.name != 'riscv64'
         run: echo 'host to guest' > host_to_guest.txt
 
       - name: Test Image
-        if: matrix.architecture.name != 'riscv64'
         uses: cross-platform-actions/action@master
         with:
           operating_system: freebsd
@@ -171,7 +168,6 @@ jobs:
             echo 'guest to host' > guest_to_host.txt
 
       - name: Verify File Synchronization
-        if: matrix.architecture.name != 'riscv64'
         run: cat guest_to_host.txt | grep -q 'guest to host'
 
       - name: Create Release
